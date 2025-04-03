@@ -1,0 +1,62 @@
+{
+	"name": "server",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/server/src",
+	"projectType": "application",
+	"tags": [],
+	"implicitDependencies": [],
+	"targets": {
+		"build": {
+			"executor": "@nx/webpack:webpack",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"target": "node",
+				"compiler": "tsc",
+				"outputPath": "dist/apps/server",
+				"main": "apps/server/src/main.ts",
+				"tsConfig": "apps/server/tsconfig.build.json",
+				"assets": [],
+				"webpackConfig": "apps/server/custom-webpack.config.js",
+				"generatePackageJson": true,
+				"thirdParty": false,
+				"sourceMap": true
+			},
+			"configurations": {
+				"production": {
+					"optimization": true,
+					"extractLicenses": true,
+					"inspect": false
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nx/js:node",
+			"options": {
+				"buildTarget": "server:build"
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"apps/server/**/*.ts"
+				]
+			}
+		},
+		"test": {
+			"executor": "@nx/jest:jest",
+			"outputs": [
+				"{workspaceRoot}/coverage/apps/server"
+			],
+			"options": {
+				"jestConfig": "apps/server/jest.config.mjs",
+				"passWithNoTests": true
+			}
+		}
+	}
+}
